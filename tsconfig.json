@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "allowImportingTsExtensions": false,
+        "allowJs": false,
+        "jsx": "react-jsx",
+        "lib": ["esnext"],
+        "module": "esnext",
+        "moduleDetection": "force",
+        "moduleResolution": "bundler",
+        "noEmit": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "paths": {
+            "@/*": ["./src/*"],
+            "@/tests/*": ["./tests/*"],
+            "@ninots/routing": ["./index.ts"]
+        },
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "esnext",
+        "types": ["bun"],
+        "verbatimModuleSyntax": true
+    },
+    "exclude": ["dist", "tests/Types/fail"]
+}
