@@ -63,6 +63,23 @@ describe("writeRouteRegistryIfChanged() / compileRouteRegistryArtifact()", () =>
         expect(await Bun.file(outPath).text()).toBe(second);
     });
 
+    test("skips write when on-disk content differs only by CRLF", async () => {
+        tempRoot = await mkdtemp(join(tmpdir(), "ninots-routes-hook-"));
+        const outPath = join(tempRoot, "routes.d.ts");
+
+        const lf =
+            '// Generated\ndeclare module "@ninots/routing" {\n    interface RouteRegistry {\n        "home": Record<never, never>;\n    }\n}\n';
+        const crlf = lf.replace(/\n/g, "\r\n");
+        await Bun.write(outPath, crlf);
+
+        expect(await writeRouteRegistryIfChanged(outPath, lf)).toBe(false);
+        // Disk may still be CRLF; next write of LF content that differs must still work
+        const changed = lf.replace('"home"', '"about"');
+        expect(await writeRouteRegistryIfChanged(outPath, changed)).toBe(true);
+        expect(await Bun.file(outPath).text()).toBe(changed);
+        expect(await Bun.file(outPath).text()).not.toContain("\r");
+    });
+
     test("compile: route added changes artifact; unchanged skips write", async () => {
         tempRoot = await mkdtemp(join(tmpdir(), "ninots-routes-hook-"));
         const outPath = join(tempRoot, "types", "routes.d.ts");
