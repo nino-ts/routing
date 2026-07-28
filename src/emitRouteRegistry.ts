@@ -77,5 +77,6 @@ export function emitRouteRegistry(routes: Route[]): string {
 
     lines.push("    }", "}", "");
 
+    // Always LF — stable across Windows/macOS/Linux (no `\r\n` from join).
     return lines.join("\n");
 }

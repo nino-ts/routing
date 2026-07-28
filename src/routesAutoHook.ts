@@ -54,18 +54,23 @@ export function shouldIgnoreWatchPath(filename: string | null | undefined): bool
 /**
  * Write `content` only when it differs from the file on disk.
  *
+ * Comparison normalizes CRLF→LF so Windows checkouts (`core.autocrlf`) do not
+ * force a rewrite that then fails idempotent `git diff` / scaffold smoke.
+ * The written artifact is always LF (`\n`), matching {@link emitRouteRegistry}.
+ *
  * @returns `true` when `Bun.write` ran
  */
 export async function writeRouteRegistryIfChanged(outPath: string, content: string): Promise<boolean> {
+    const normalizedContent = content.replace(/\r\n/g, "\n");
     const existing = Bun.file(outPath);
     if (await existing.exists()) {
-        const previous = await existing.text();
-        if (previous === content) {
+        const previous = (await existing.text()).replace(/\r\n/g, "\n");
+        if (previous === normalizedContent) {
             return false;
         }
     }
 
-    await Bun.write(outPath, content);
+    await Bun.write(outPath, normalizedContent);
     return true;
 }
 
