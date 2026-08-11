@@ -16,7 +16,7 @@ import type { RouteParams } from "./types";
  * There is intentionally no `string` fallback when the registry is empty —
  * `keyof RouteRegistry` is `never` until the artifact augments this interface.
  */
-export interface RouteRegistry {}
+export type RouteRegistry = {};
 
 /**
  * Minimal router surface required by {@link route}.
@@ -34,9 +34,8 @@ type ParamsOf<Name extends RegistryName> = RouteRegistry[Name];
  */
 type HasNoParams<Name extends RegistryName> = [keyof ParamsOf<Name>] extends [never] ? true : false;
 
-type RouteCallArgs<Name extends RegistryName> = HasNoParams<Name> extends true
-    ? [] | [ParamsOf<Name>?]
-    : [ParamsOf<Name>];
+type RouteCallArgs<Name extends RegistryName> =
+    HasNoParams<Name> extends true ? [] | [ParamsOf<Name>?] : [ParamsOf<Name>];
 
 let resolver: RouteResolver | undefined;
 
