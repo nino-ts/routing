@@ -191,7 +191,7 @@ describe("startRoutesAutoHook() resilience (no long-running watch)", () => {
             });
 
             await Bun.write(join(tempRoot, "web.ts"), "export {};\n");
-            await Bun.sleep(120);
+            await Bun.sleep(400);
             controller.abort();
             await hookDone;
 
@@ -222,7 +222,7 @@ describe("startRoutesAutoHook() resilience (no long-running watch)", () => {
             });
 
             await Bun.write(join(tempRoot, "web.ts"), "export {};\n");
-            await Bun.sleep(120);
+            await Bun.sleep(400);
             controller.abort();
             await hookDone;
 
@@ -264,9 +264,9 @@ describe("startRoutesAutoHook() resilience (no long-running watch)", () => {
             });
 
             await Bun.write(join(tempRoot, "web.ts"), "export {};\n");
-            await Bun.sleep(120);
+            await Bun.sleep(400);
             await Bun.write(join(tempRoot, "api.ts"), "export {};\n");
-            await Bun.sleep(120);
+            await Bun.sleep(400);
             controller.abort();
             await hookDone;
 
