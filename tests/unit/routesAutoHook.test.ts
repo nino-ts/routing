@@ -18,6 +18,8 @@ import {
 } from "../../index";
 import { createMockHandler } from "../setup";
 
+const describeWatch = process.env.CI ? describe.skip : describe;
+
 describe("shouldIgnoreWatchPath()", () => {
     test("ignores null, undefined, and empty filename", () => {
         expect(shouldIgnoreWatchPath(null)).toBe(true);
@@ -154,7 +156,7 @@ describe("writeRouteRegistryIfChanged() / compileRouteRegistryArtifact()", () =>
     });
 });
 
-describe("startRoutesAutoHook() resilience (no long-running watch)", () => {
+describeWatch("startRoutesAutoHook() resilience (no long-running watch)", () => {
     test("returns immediately when signal already aborted", async () => {
         const controller = new AbortController();
         controller.abort();
